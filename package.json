@@ -1,0 +1,17 @@
+{
+  "name": "verification-of-android-os-enabled-devices",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adbkit": "^2.11.1",
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0"
+  }
+}
