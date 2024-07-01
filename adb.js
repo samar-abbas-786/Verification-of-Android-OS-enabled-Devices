@@ -21,4 +21,14 @@ async function connectedDevies(ip) {
   }
 }
 
-module.exports = { listdevices, connectedDevies };
+async function runTest(deviceId, testCommand) {
+  try {
+    const result = await client.shell(deviceId, testCommand);
+    console.log(`Test result on ${deviceId} is`, result.toString());
+    return result.toString();
+  } catch (err) {
+    console.log(`Failed test on ${deviceId}`, err);
+  }
+}
+
+module.exports = { listdevices, connectedDevies, runTest };

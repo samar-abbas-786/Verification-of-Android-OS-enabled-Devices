@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { listdevices, connectedDevies } = require("./adb");
+const { listdevices, connectedDevies, runTest } = require("./adb");
 const PORT = 3000;
 
 app.get("/", (req, res) => {
@@ -18,6 +18,16 @@ app.post("/connect-ip", async (req, res) => {
     console.log("connected to ", connectDevice);
   } catch (err) {
     console.log("error occured", err);
+  }
+});
+
+app.post("/test-run", async (req, res) => {
+  try {
+    const { deviceId, testCommand } = req.body;
+    const result = await runTest(deviceId, testCommand);
+    res.json({ result });
+  } catch (err) {
+    console.log(`Test failed on server side on ${deviceId}`, err);
   }
 });
 
