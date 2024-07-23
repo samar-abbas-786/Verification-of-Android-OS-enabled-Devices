@@ -1,34 +1,78 @@
 const adb = require("adbkit");
 const client = adb.createClient();
 
-async function listdevices() {
+async function listDevices() {
   try {
     const devices = await client.listDevices();
+    console.log("Connected devices:", devices);
     return devices;
-    console.log("Connected devices", devices);
   } catch (err) {
-    console.log("Error Occured", err);
+    console.log("Error occurred:", err);
+    throw err;
   }
 }
 
-async function connectedDevies(ip) {
+async function connectDevice(ip) {
   try {
     const connect = await client.connect(ip, 5555);
+    console.log("Connected to device:", ip);
     return connect;
-    console.log("connected to devices", ip);
   } catch (err) {
-    console.log("Error Occured", err);
+    console.log("Error occurred:", err);
+    throw err;
   }
 }
 
 async function runTest(deviceId, testCommand) {
   try {
     const result = await client.shell(deviceId, testCommand);
-    console.log(`Test result on ${deviceId} is`, result.toString());
-    return result.toString();
+    const output = await adb.util.readAll(result);
+    const resultString = output.toString();
+    console.log(`Test result on ${deviceId}:`, resultString);
+    return resultString;
   } catch (err) {
-    console.log(`Failed test on ${deviceId}`, err);
+    console.log(`Failed test on ${deviceId}:`, err);
+    throw err;
   }
 }
 
-module.exports = { listdevices, connectedDevies, runTest };
+client.listDevices()
+  .then(devices => {
+    if (devices.length === 0) {
+      console.log('No devices connected');
+      return;
+    }
+
+    devices.forEach(device => {
+      console.log(`Device ID: ${device.id}`);
+
+      client.getProperties(device.id)
+        .then(properties => {
+          console.log('Device Properties:');
+          // console.log(properties);
+
+          const details = {
+            model: properties['ro.product.model'],
+            brand: properties['ro.product.brand'],
+            androidVersion: properties['ro.build.version.release'],
+            sdkVersion: properties['ro.build.version.sdk']
+          };
+
+          // console.log('Specific Details:');
+          // console.log(details);
+        })
+        .catch(err => {
+          console.error('Error getting properties:', err);
+        });
+    });
+  })
+  .catch(err => {
+    console.error('Error listing devices:', err);
+  });
+
+//install a single Package across multiple
+
+// const allDevices=await listDevices();
+// allDevices.map((device)=>device.install('http'))
+
+module.exports = { listDevices, connectDevice, runTest };
