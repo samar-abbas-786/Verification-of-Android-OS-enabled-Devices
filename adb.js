@@ -77,33 +77,33 @@ const apkPath = path.resolve(
 //     console.error("Error listing devices:", err);
 //   });
 
-client
-  .listDevices()
-  .then((devices) => {
-    if (devices.length === 0) {
-      console.log("No Device Connected");
-      return;
-    }
-    devices.forEach((device) => {
-      console.log(`Device id: ${device.id}`);
+// client
+//   .listDevices()
+//   .then((devices) => {
+//     if (devices.length === 0) {
+//       console.log("No Device Connected");
+//       return;
+//     }
+//     devices.forEach((device) => {
+//       console.log(`Device id: ${device.id}`);
 
-      client
-        .install(device.id, apkPath)
-        .then(() => {
-          console.log(
-            `Successfully installed ${apkPath} on device ${device.id}`
-          );
-        })
-        .catch((err) => {
-          console.error(
-            `Failed to install ${apkPath} on device ${device.id}:`,
-            err
-          );
-        });
-    });
-  })
-  .catch((err) => {
-    console.error("Error listing devices:", err);
-  });
+//       client
+//         .install(device.id, apkPath)
+//         .then(() => {
+//           console.log(
+//             `Successfully installed ${apkPath} on device ${device.id}`
+//           );
+//         })
+//         .catch((err) => {
+//           console.error(
+//             `Failed to install ${apkPath} on device ${device.id}:`,
+//             err
+//           );
+//         });
+//     });
+//   })
+//   .catch((err) => {
+//     console.error("Error listing devices:", err);
+//   });
 
 // module.exports = { listDevices, connectDevice, runTest };
