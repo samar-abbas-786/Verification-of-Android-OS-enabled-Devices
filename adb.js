@@ -1,6 +1,8 @@
 const adb = require("adbkit");
 const client = adb.createClient();
 const fs = require("fs");
+const { createWorker } = require("tesseract.js");
+
 const path = require("path");
 const apkPath = path.resolve(
   __dirname,
@@ -155,13 +157,38 @@ async function takeScreenshot() {
       // Combine all chunks into a single buffer
       const buffer = Buffer.concat(chunks);
       // Save to file
-      fs.writeFileSync(path.join(__dirname, "screenshot.png"), buffer);
+      const screenshotPath = path.join(__dirname, "screenshot.png");
+      fs.writeFileSync(screenshotPath, buffer);
       console.log("Screenshot saved as screenshot.png");
+
+      // Perform OCR on the saved screenshot
+      performOCR(screenshotPath);
     });
   } catch (err) {
     console.error("Failed to take screenshot:", err);
   }
 }
 
+async function performOCR(imagePath) {
+  const worker = createWorker(); // Initialize the worker
+
+  try {
+    await worker.load();
+    await worker.loadLanguage("eng");
+    await worker.initialize("eng");
+
+    const {
+      data: { text },
+    } = await worker.recognize(imagePath);
+
+    console.log("Extracted text:", text);
+  } catch (err) {
+    console.error("Failed to perform OCR:", err);
+  } finally {
+    await worker.terminate(); // Terminate the worker
+  }
+}
+
+// Call the function to take a screenshot and perform OCR
 takeScreenshot();
 // module.exports = { listDevices, connectDevice, runTest };
