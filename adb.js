@@ -106,4 +106,31 @@ const apkPath = path.resolve(
 //     console.error("Error listing devices:", err);
 //   });
 
+client.listDevices()
+  .then((devices) => {
+    if (devices.length === 0) {
+      console.log("No Device Connected");
+      return;
+    }
+    
+    devices.forEach((device) => {
+      console.log(`Device id: ${device.id}`);
+      
+      // Fetch installed packages on the device
+      client.getPackages(device.id)
+        .then((packages) => {
+          console.log(`Installed packages on device ${device.id}:`);
+          packages.forEach((pkg) => {
+            console.log(pkg); // Log each package name
+          });
+        })
+        .catch((err) => {
+          console.error(`Failed to get packages from device ${device.id}:`, err);
+        });
+    });
+  })
+  .catch((err) => {
+    console.error("Error listing devices:", err);
+  });
+
 // module.exports = { listDevices, connectDevice, runTest };
