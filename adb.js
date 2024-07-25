@@ -1,5 +1,6 @@
 const adb = require("adbkit");
 const client = adb.createClient();
+const fs = require("fs");
 const path = require("path");
 const apkPath = path.resolve(
   __dirname,
@@ -106,31 +107,61 @@ const apkPath = path.resolve(
 //     console.error("Error listing devices:", err);
 //   });
 
-client.listDevices()
-  .then((devices) => {
+// client.listDevices()
+//   .then((devices) => {
+//     if (devices.length === 0) {
+//       console.log("No Device Connected");
+//       return;
+//     }
+
+//     devices.forEach((device) => {
+//       console.log(`Device id: ${device.id}`);
+
+//       // Fetch installed packages on the device
+//       client.getPackages(device.id)
+//         .then((packages) => {
+//           console.log(`Installed packages on device ${device.id}:`);
+//           packages.forEach((pkg) => {
+//             console.log(pkg); // Log each package name
+//           });
+//         })
+//         .catch((err) => {
+//           console.error(`Failed to get packages from device ${device.id}:`, err);
+//         });
+//     });
+//   })
+//   .catch((err) => {
+//     console.error("Error listing devices:", err);
+//   });
+async function takeScreenshot() {
+  try {
+    // List connected devices
+    const devices = await client.listDevices();
+
     if (devices.length === 0) {
-      console.log("No Device Connected");
+      console.log("No device connected");
       return;
     }
-    
-    devices.forEach((device) => {
-      console.log(`Device id: ${device.id}`);
-      
-      // Fetch installed packages on the device
-      client.getPackages(device.id)
-        .then((packages) => {
-          console.log(`Installed packages on device ${device.id}:`);
-          packages.forEach((pkg) => {
-            console.log(pkg); // Log each package name
-          });
-        })
-        .catch((err) => {
-          console.error(`Failed to get packages from device ${device.id}:`, err);
-        });
-    });
-  })
-  .catch((err) => {
-    console.error("Error listing devices:", err);
-  });
 
+    // Take a screenshot on the first connected device
+    const deviceId = devices[0].id;
+
+    // Capture screenshot
+    const screenshot = await client.shell(deviceId, "screencap -p");
+    const chunks = [];
+
+    screenshot.on("data", (chunk) => chunks.push(chunk));
+    screenshot.on("end", () => {
+      // Combine all chunks into a single buffer
+      const buffer = Buffer.concat(chunks);
+      // Save to file
+      fs.writeFileSync(path.join(__dirname, "screenshot.png"), buffer);
+      console.log("Screenshot saved as screenshot.png");
+    });
+  } catch (err) {
+    console.error("Failed to take screenshot:", err);
+  }
+}
+
+takeScreenshot();
 // module.exports = { listDevices, connectDevice, runTest };
