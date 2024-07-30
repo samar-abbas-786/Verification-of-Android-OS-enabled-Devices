@@ -9,16 +9,16 @@ const apkPath = path.resolve(
   "C:\\Users\\HP\\Downloads\\1.1.1.1 + WARP_ Safer Internet_6.33_APKPure.apk"
 );
 
-// async function listDevices() {
-//   try {
-//     const devices = await client.listDevices();
-//     console.log("Connected devices:", devices);
-//     return devices;
-//   } catch (err) {
-//     console.log("Error occurred:", err);
-//     throw err;
-//   }
-// }
+async function listDevices() {
+  try {
+    const devices = await client.listDevices();
+    console.log("Connected devices:", devices);
+    return devices;
+  } catch (err) {
+    console.log("Error occurred:", err);
+    throw err;
+  }
+}
 
 // async function connectDevice(ip) {
 //   try {
@@ -31,18 +31,18 @@ const apkPath = path.resolve(
 //   }
 // }
 
-// async function runTest(deviceId, testCommand) {
-//   try {
-//     const result = await client.shell(deviceId, testCommand);
-//     const output = await adb.util.readAll(result);
-//     const resultString = output.toString();
-//     console.log(`Test result on ${deviceId}:`, resultString);
-//     return resultString;
-//   } catch (err) {
-//     console.log(`Failed test on ${deviceId}:`, err);
-//     throw err;
-//   }
-// }
+async function runTest(deviceId, testCommand) {
+  try {
+    const result = await client.shell(deviceId, testCommand);
+    const output = await adb.util.readAll(result);
+    const resultString = output.toString();
+    console.log(`Test result on ${deviceId}:`, resultString);
+    return resultString;
+  } catch (err) {
+    console.log(`Failed test on ${deviceId}:`, err);
+    throw err;
+  }
+}
 
 // client
 //   .listDevices()
@@ -135,60 +135,75 @@ const apkPath = path.resolve(
 //   .catch((err) => {
 //     console.error("Error listing devices:", err);
 //   });
-async function takeScreenshot() {
-  try {
-    // List connected devices
-    const devices = await client.listDevices();
+// async function takeScreenshot() {
+//   try {
+//     // List connected devices
+//     const devices = await client.listDevices();
 
-    if (devices.length === 0) {
-      console.log("No device connected");
-      return;
-    }
+//     if (devices.length === 0) {
+//       console.log("No device connected");
+//       return;
+//     }
 
-    // Take a screenshot on the first connected device
-    const deviceId = devices[0].id;
+//     // Take a screenshot on the first connected device
+//     const deviceId = devices[0].id;
 
-    // Capture screenshot
-    const screenshot = await client.shell(deviceId, "screencap -p");
-    const chunks = [];
+//     // Capture screenshot
+//     const screenshot = await client.shell(deviceId, "screencap -p");
+//     const chunks = [];
 
-    screenshot.on("data", (chunk) => chunks.push(chunk));
-    screenshot.on("end", () => {
-      // Combine all chunks into a single buffer
-      const buffer = Buffer.concat(chunks);
-      // Save to file
-      const screenshotPath = path.join(__dirname, "screenshot.png");
-      fs.writeFileSync(screenshotPath, buffer);
-      console.log("Screenshot saved as screenshot.png");
+//     screenshot.on("data", (chunk) => chunks.push(chunk));
+//     screenshot.on("end", () => {
+//       // Combine all chunks into a single buffer
+//       const buffer = Buffer.concat(chunks);
+//       // Save to file
+//       const screenshotPath = path.join(__dirname, "screenshot.png");
+//       fs.writeFileSync(screenshotPath, buffer);
+//       console.log("Screenshot saved as screenshot.png");
 
-      // Perform OCR on the saved screenshot
-      performOCR(screenshotPath);
-    });
-  } catch (err) {
-    console.error("Failed to take screenshot:", err);
-  }
-}
+//       // Perform OCR on the saved screenshot
+//       // performOCR(screenshotPath);
+//     });
+//   } catch (err) {
+//     console.error("Failed to take screenshot:", err);
+//   }
+// }
 
-async function performOCR(imagePath) {
-  const worker = createWorker(); // Initialize the worker
+// async function performOCR(imagePath) {
+//   const worker = createWorker(); // Initialize the worker
 
-  try {
-    await worker.load();
-    await worker.loadLanguage("eng");
-    await worker.initialize("eng");
+//   try {
+//     await worker.load();
+//     await worker.loadLanguage("eng");
+//     await worker.initialize("eng");
 
-    const {
-      data: { text },
-    } = await worker.recognize(imagePath);
+//     const {
+//       data: { text },
+//     } = await worker.recognize(imagePath);
 
-    console.log("Extracted text:", text);
-  } catch (err) {
-    console.error("Failed to perform OCR:", err);
-  } finally {
-    await worker.terminate(); // Terminate the worker
-  }
-}
+//     console.log("Extracted text:", text);
+//   } catch (err) {
+//     console.error("Failed to perform OCR:", err);
+//   } finally {
+//     await worker.terminate(); // Terminate the worker
+//   }
+// }
 
 // Call the function to take a screenshot and perform OCR
-takeScreenshot();
+// takeScreenshot();
+// async function runTest(deviceId, testCommand) {
+//   try {
+//     const result = await client.shell(deviceId, testCommand);
+//     const output = await adb.util.readAll(result);
+//     const resultString = output.toString();
+//     console.log(`Test result on ${deviceId}:`, resultString);
+//     return resultString;
+//   } catch (err) {
+//     console.log(`Failed test on ${deviceId}:`, err);
+//     throw err;
+//   }
+// }
+// runTest()
+
 // module.exports = { listDevices, connectDevice, runTest };
+module.exports = { listDevices,runTest };
