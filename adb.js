@@ -204,6 +204,55 @@ async function runTest(deviceId, testCommand) {
 //   }
 // }
 // runTest()
+// const ScreenRecord = async () => {
+//   let deviceId; // Declare deviceId outside of try block for access in finally
 
+//   try {
+//     // List all connected devices
+//     const devices = await client.listDevices();
+//     if (devices.length === 0) {
+//       console.log("No devices connected");
+//       return;
+//     }
+//     deviceId = devices[0].id;
+
+//     // Start screen recording with a time limit of 10 seconds
+//     const remotePath = "/storage/emulated/0/recordedVideo.mp4";
+//     const command = `screenrecord --time-limit 10 ${remotePath}`;
+//     await client.shell(deviceId, command);
+
+//     // Pull the video file from the device to the local machine
+//     const transfer = await client.pull(deviceId, remotePath);
+//     const recordVideoPath = path.join(__dirname, "recordedVideo.mp4");
+
+//     // Write the pulled file to the local filesystem
+//     return new Promise((resolve, reject) => {
+//       const outStream = fs.createWriteStream(recordVideoPath);
+//       transfer.pipe(outStream);
+//       transfer.on('end', () => {
+//         console.log("recordedVideo saved as recordedVideo.mp4");
+//         resolve();
+//       });
+//       transfer.on('error', (err) => {
+//         console.error("Failed to save recorded video:", err);
+//         reject(err);
+//       });
+//     });
+//   } catch (err) {
+//     console.error("An error occurred:", err);
+//   } finally {
+//     // Clean up: remove the video file from the device
+//     if (deviceId) {
+//       try {
+//         await client.shell(deviceId, `rm ${remotePath}`);
+//       } catch (cleanupErr) {
+//         console.error("Failed to remove video file from device:", cleanupErr);
+//       }
+//     }
+//   }
+// };
+
+// // Execute the function
+// ScreenRecord();
 // module.exports = { listDevices, connectDevice, runTest };
-module.exports = { listDevices,runTest };
+// module.exports = { listDevices,runTest };
