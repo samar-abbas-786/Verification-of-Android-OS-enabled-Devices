@@ -1,6 +1,7 @@
 const adb = require("adbkit");
 const client = adb.createClient();
-const fs = require("fs");
+const fs = require('fs');
+const xml2js = require('xml2js');
 const { createWorker } = require("tesseract.js");
 
 const path = require("path");
@@ -254,5 +255,25 @@ async function runTest(deviceId, testCommand) {
 
 // // Execute the function
 // ScreenRecord();
+const sendTextToDevice = async (text) => {
+  try {
+    const devices = await client.listDevices();
+    if (devices.length === 0) {
+      console.log("No devices connected");
+      return;
+    }
+    const deviceId = devices[0].id;
+
+    // Replace spaces with %s as required by the adb shell input command
+    const encodedText = text.replace(/ /g, '%s');
+    await client.shell(deviceId, `input text "${encodedText}"`);
+    console.log(`Text "${text}" sent to device.`);
+  } catch (err) {
+    console.error("An error occurred:", err);
+  }
+};
+
+// Example usage
+sendTextToDevice("Hello World");
 // module.exports = { listDevices, connectDevice, runTest };
 // module.exports = { listDevices,runTest };
