@@ -4,22 +4,22 @@ const fs = require('fs');
 const xml2js = require('xml2js');
 const { createWorker } = require("tesseract.js");
 
-const path = require("path");
-const apkPath = path.resolve(
-  __dirname,
-  "C:\\Users\\HP\\Downloads\\1.1.1.1 + WARP_ Safer Internet_6.33_APKPure.apk"
-);
+// const path = require("path");
+// const apkPath = path.resolve(
+//   __dirname,
+//   "C:\\Users\\HP\\Downloads\\1.1.1.1 + WARP_ Safer Internet_6.33_APKPure.apk"
+// );
 
-async function listDevices() {
-  try {
-    const devices = await client.listDevices();
-    console.log("Connected devices:", devices);
-    return devices;
-  } catch (err) {
-    console.log("Error occurred:", err);
-    throw err;
-  }
-}
+// async function listDevices() {
+//   try {
+//     const devices = await client.listDevices();
+//     console.log("Connected devices:", devices);
+//     return devices;
+//   } catch (err) {
+//     console.log("Error occurred:", err);
+//     throw err;
+//   }
+// }
 
 // async function connectDevice(ip) {
 //   try {
@@ -32,18 +32,18 @@ async function listDevices() {
 //   }
 // }
 
-async function runTest(deviceId, testCommand) {
-  try {
-    const result = await client.shell(deviceId, testCommand);
-    const output = await adb.util.readAll(result);
-    const resultString = output.toString();
-    console.log(`Test result on ${deviceId}:`, resultString);
-    return resultString;
-  } catch (err) {
-    console.log(`Failed test on ${deviceId}:`, err);
-    throw err;
-  }
-}
+// async function runTest(deviceId, testCommand) {
+//   try {
+//     const result = await client.shell(deviceId, testCommand);
+//     const output = await adb.util.readAll(result);
+//     const resultString = output.toString();
+//     console.log(`Test result on ${deviceId}:`, resultString);
+//     return resultString;
+//   } catch (err) {
+//     console.log(`Failed test on ${deviceId}:`, err);
+//     throw err;
+//   }
+// }
 
 // client
 //   .listDevices()
@@ -190,7 +190,7 @@ async function runTest(deviceId, testCommand) {
 //   }
 // }
 
-// Call the function to take a screenshot and perform OCR
+// // Call the function to take a screenshot and perform OCR
 // takeScreenshot();
 // async function runTest(deviceId, testCommand) {
 //   try {
@@ -255,25 +255,166 @@ async function runTest(deviceId, testCommand) {
 
 // // Execute the function
 // ScreenRecord();
-const sendTextToDevice = async (text) => {
+// const sendTextToDevice = async (text) => {
+//   try {
+//     const devices = await client.listDevices();
+//     if (devices.length === 0) {
+//       console.log("No devices connected");
+//       return;
+//     }
+//     const deviceId = devices[0].id;
+
+//     // Replace spaces with %s as required by the adb shell input command
+//     const encodedText = text.replace(/ /g, '%s');
+//     await client.shell(deviceId, `input text "${encodedText}"`);
+//     console.log(`Text "${text}" sent to device.`);
+//   } catch (err) {
+//     console.error("An error occurred:", err);
+//   }
+// };
+
+// // Example usage
+// sendTextToDevice("Hello World");
+
+//Scrolling Function
+// async function scrollDown(deviceId) {
+//   try {
+//     // Define the starting and ending coordinates for the swipe action.
+//     const startX = 500; // x-coordinate for the start of the swipe
+//     const startY = 1000; // y-coordinate for the start of the swipe
+//     const endX = 500; // x-coordinate for the end of the swipe
+//     const endY = 200; // y-coordinate for the end of the swipe
+//     const duration = 500; // Duration of the swipe in ms
+
+//     // Perform the swipe action
+//     await client.shell(deviceId, `input swipe ${startX} ${startY} ${endX} ${endY} ${duration}`);
+//     console.log('Scroll down action performed');
+//   } catch (err) {
+//     console.error('Error performing scroll action:', err);
+//   }
+// }
+
+// // Replace 'device-id' with your device's ID or keep it empty to use the first connected device
+// client.listDevices()
+//   .then(devices => {
+//     if (devices.length === 0) {
+//       throw new Error('No devices connected');
+//     }
+//     const deviceId = devices[0].id; // Use the first connected device
+//     scrollDown(deviceId);
+//   })
+//   .catch(err => {
+//     console.error('Error:', err);
+//   });
+
+
+
+
+//  CLICK FUNCTION
+
+// async function click(deviceId, x, y) {
+//   try {
+//     // Perform the tap action at the specified coordinates (x, y)
+//     await client.shell(deviceId, `input tap ${x} ${y}`);
+//     console.log(`Clicked at coordinates (${x}, ${y})`);
+//   } catch (err) {
+//     console.error('Error performing click action:', err);
+//   }
+// }
+
+// // Replace 'device-id' with your device's ID or leave it empty to use the first connected device
+// client.listDevices()
+//   .then(devices => {
+//     if (devices.length === 0) {
+//       throw new Error('No devices connected');
+//     }
+//     const deviceId = devices[0].id; // Use the first connected device
+//     const x = 200; // x-coordinate where the tap will be performed
+//     const y = 1500; // y-coordinate where the tap will be performed
+//     click(deviceId, x, y);
+//   })
+//   .catch(err => {
+//     console.error('Error:', err);
+//   });
+
+
+//Reding-Writing text
+// async function writeText(deviceId, text) {
+//   try {
+//     // Encode the text to handle spaces and special characters
+//     const encodedText = encodeURIComponent(text);
+//     // Perform the input text action
+//     await client.shell(deviceId, `input text "${encodedText}"`);
+//     console.log(`Text "${text}" written to the device`);
+//   } catch (err) {
+//     console.error('Error writing text:', err);
+//   }
+// }
+
+// // Replace 'device-id' with your device's ID or leave it empty to use the first connected device
+// client.listDevices()
+//   .then(devices => {
+//     if (devices.length === 0) {
+//       throw new Error('No devices connected');
+//     }
+//     const deviceId = devices[0].id; // Use the first connected device
+//     const text = "Hello SAMAR ABBAS"; // Text to write
+//     writeText(deviceId, text);
+//   })
+//   .catch(err => {
+//     console.error('Error:', err);
+//   });
+
+
+//Hardcoded 
+
+
+
+// Load the configuration file
+const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+
+async function getNetworkOperator(deviceId) {
   try {
-    const devices = await client.listDevices();
-    if (devices.length === 0) {
-      console.log("No devices connected");
-      return;
-    }
-    const deviceId = devices[0].id;
-
-    // Replace spaces with %s as required by the adb shell input command
-    const encodedText = text.replace(/ /g, '%s');
-    await client.shell(deviceId, `input text "${encodedText}"`);
-    console.log(`Text "${text}" sent to device.`);
+    // Get the network operator name using adb shell command
+    const operator = await client.shell(deviceId, 'getprop gsm.operator.alpha');
+    return (await adb.util.readAll(operator)).toString().trim();
   } catch (err) {
-    console.error("An error occurred:", err);
+    console.error(`Error getting network operator for ${deviceId}:`, err);
+    return null;
   }
-};
+}
 
-// Example usage
-sendTextToDevice("Hello World");
+async function checkNetwork(deviceId, expectedNetwork) {
+  const actualNetwork = await getNetworkOperator(deviceId);
+  if (actualNetwork) {
+    if (actualNetwork === expectedNetwork) {
+      console.log(`PASS: Device ${deviceId} is connected to ${actualNetwork}`);
+    } else {
+      console.log(`FAIL: Device ${deviceId} is connected to ${actualNetwork} instead of ${expectedNetwork}`);
+    }
+  }
+}
+
+client.listDevices()
+  .then(async devices => {
+    if (devices.length === 0) {
+      throw new Error('No devices connected');
+    }
+
+    for (const device of devices) {
+      const deviceId = device.id;
+      const expectedNetwork = config.devices[deviceId];
+
+      if (expectedNetwork) {
+        await checkNetwork(deviceId, expectedNetwork);
+      } else {
+        console.warn(`No expected network specified for device ${deviceId}`);
+      }
+    }
+  })
+  .catch(err => {
+    console.error('Error:', err);
+  });
+
 // module.exports = { listDevices, connectDevice, runTest };
 // module.exports = { listDevices,runTest };

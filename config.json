@@ -1,0 +1,7 @@
+{
+    "devices": {
+      "device1_id": "Airtel",
+      "device2_id": "BSNL",
+      "device3_id": "JIO"
+    }
+  }
