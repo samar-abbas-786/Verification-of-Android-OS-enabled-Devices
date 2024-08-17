@@ -32,12 +32,3 @@ To get started, ensure you have the following installed:
 ```bash
 npm install
 
-
-
-
-
-
-
-
-   
-
