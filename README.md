@@ -32,10 +32,10 @@ To get started, ensure you have the following installed:
 ```bash
 npm install
 
-3. **Ensure ADB is working: Ensure that adb is added to your system's PATH and that it can recognize connected Android devices:**
 
-```bash
-adb devices
+
+
+
 
 
 
