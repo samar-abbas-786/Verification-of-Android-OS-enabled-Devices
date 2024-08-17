@@ -27,6 +27,8 @@ To get started, ensure you have the following installed:
    git clone https://github.com/yourusername/android-test-automation.git
    cd android-test-automation
 
-
+Install dependencies:
    npm install
+
+   
 
