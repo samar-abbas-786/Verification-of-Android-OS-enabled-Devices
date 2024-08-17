@@ -26,3 +26,7 @@ To get started, ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/android-test-automation.git
    cd android-test-automation
+
+
+   npm install
+
