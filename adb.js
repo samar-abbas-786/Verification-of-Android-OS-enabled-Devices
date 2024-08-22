@@ -250,6 +250,123 @@ client
   });
 
 
+/*
+// Open/close mobile data
+
+const { execSync } = require('child_process');
+
+// Function to enable/disable mobile data
+function setMobileData(deviceId, enable) {
+    try {
+        const command = enable
+            ? `adb -s ${deviceId} shell svc data enable`
+            : `adb -s ${deviceId} shell svc data disable`;
+
+        execSync(command);
+        console.log(`Mobile data ${enable ? 'enabled' : 'disabled'}`);
+    } catch (error) {
+        console.error(`Failed to ${enable ? 'enable' : 'disable'} mobile data: ${error.message}`);
+    }
+}
+
+// Example Usage:
+const deviceId = 'ZD6XKVMF6DV4CUGY'; // Replace with your device ID
+
+setMobileData(deviceId, true);  // Enable mobile data
+
+// Function to change the sound mode
+function setSoundMode(deviceId, mode) {
+    try {
+        let command;
+
+        switch (mode.toLowerCase()) {
+            case 'ring':
+                command = `adb -s ${deviceId} shell settings put global zen_mode 0 && adb -s ${deviceId} shell settings put global mode_ringer 2`;
+                break;
+            case 'vibrate':
+                command = `adb -s ${deviceId} shell settings put global zen_mode 0 && adb -s ${deviceId} shell settings put global mode_ringer 1`;
+                break;
+            case 'silent':
+                command = `adb -s ${deviceId} shell settings put global zen_mode 1`;
+                break;
+            default:
+                console.log('Invalid mode. Please choose between "ring", "vibrate", or "silent".');
+                return;
+        }
+
+        execSync(command);
+        console.log(`Sound mode set to ${mode}`);
+    } catch (error) {
+        console.error(`Failed to set sound mode to ${mode}: ${error.message}`);
+    }
+}
+
+// Example Usage:
+const deviceId = 'ZD6XKVMF6DV4CUGY'; // Replace with your device ID
+
+setSoundMode(deviceId, 'ring');    // Set to Ring mode
+setSoundMode(deviceId, 'vibrate'); // Set to Vibrate mode
+setSoundMode(deviceId, 'silent');  // Set to Silent mode
+
+/ Function to unlock the device
+function unlockDevice(deviceId, pin = '') {
+    try {
+        // Wake up the device
+        execSync(`adb -s ${deviceId} shell input keyevent 26`);
+
+        // Simulate swipe up to unlock
+        execSync(`adb -s ${deviceId} shell input swipe 300 1000 300 500`);
+
+        // If a PIN is provided, enter it
+        if (pin) {
+            for (let digit of pin) {
+                execSync(`adb -s ${deviceId} shell input text ${digit}`);
+            }
+            execSync(`adb -s ${deviceId} shell input keyevent 66`); // Press enter
+        }
+
+        console.log('Device unlocked');
+    } catch (error) {
+        console.error('Failed to unlock device:', error.message);
+    }
+}
+
+// Example Usage:
+const deviceId = 'ZD6XKVMF6DV4CUGY'; // Replace with your device ID
+const pin = '1234'; // Replace with your device's PIN or password
+
+unlockDevice(deviceId, pin);
+
+
+// Function to reboot the device
+function rebootDevice(deviceId) {
+    try {
+        execSync(`adb -s ${deviceId} reboot`);
+        console.log(`Device ${deviceId} is rebooting...`);
+    } catch (error) {
+        console.error(`Failed to reboot device ${deviceId}:`, error.message);
+    }
+}
+
+// Example Usage:
+const deviceId = 'your_device_id_here'; // Replace with your device ID
+rebootDevice(deviceId);
+
+// Function to power off the device
+function powerOffDevice(deviceId) {
+    try {
+        execSync(`adb -s ${deviceId} shell reboot -p`);
+        console.log(`Device ${deviceId} is powering off...`);
+    } catch (error) {
+        console.error(`Failed to power off device ${deviceId}:`, error.message);
+    }
+}
+
+// Example Usage:
+const deviceId = 'ZD6XKVMF6DV4CUGY'; // Replace with your device ID
+powerOffDevice(deviceId);
+*/
+
 
 
 // Summary of test cases
